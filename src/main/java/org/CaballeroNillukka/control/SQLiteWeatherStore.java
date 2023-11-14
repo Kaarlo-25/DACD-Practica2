@@ -1,13 +1,17 @@
 package org.CaballeroNillukka.control;
 
+import org.CaballeroNillukka.model.Location;
+import org.CaballeroNillukka.model.Weather;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 
 import static org.CaballeroNillukka.control.Main.locationsList;
 
-public class SQLiteWeatherStore {
+public class SQLiteWeatherStore implements WeatherStore {
 	public static void createDatabase(){
 		String dbPath = "database.db";
 		try (Connection connection = connect(dbPath)){
@@ -57,6 +61,11 @@ public class SQLiteWeatherStore {
 				"SET name = 'orbea500' \n" +
 				"WHERE" + " name='orbea';");
 		System.out.println("Table products updated");
+	}
+
+	@Override
+	public void storeWeatherData(Weather weather, Location location, Instant timestamp) {
+
 	}
 
 	/*private static void delete(Statement statement) throws SQLException {

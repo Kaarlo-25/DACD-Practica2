@@ -3,9 +3,11 @@ package org.CaballeroNillukka.control;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.CaballeroNillukka.model.Location;
+import org.CaballeroNillukka.model.Weather;
 
 
 public class Main {
@@ -17,13 +19,12 @@ public class Main {
 		// Crear base de datos y tablas vacias
 		SQLiteWeatherStore.createDatabase();
 
-		//llamar controller, dias 0-4
-		// provider = openweathermap; new con los parametros
-		// store = sqlite; new con los parametros
-
-
-
-
+		//llamar controller, 5 dias
+		WeatherProvider weatherProvider = new OpenWeatherMapProvider();
+		WeatherStore weatherStore = new SQLiteWeatherStore();
+		for (int i=0; i<8; i++){
+			WeatherController weatherController = new WeatherController(locationsList.get(i), 5, weatherProvider, weatherStore);
+		}
 	}
 
 	public static void loadLocationsFromFile(String filePath) throws IOException {
