@@ -42,6 +42,7 @@ public class WeatherController {
 
 	//Methods
 	public void execute(){
-
+		// llamar open weather map y descarga los datos
+		// guardar en sqlite
 	}
 }

@@ -4,4 +4,7 @@ public class OpenWeatherMapProvider {
 	private static final String templateURL = null;
 	private static String apiKey;
 
+	//Jsoup
+	// return weather
+
 }
