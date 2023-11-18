@@ -31,5 +31,7 @@ public class Location {
 	}
 
 	//Methods
-
+	public String toString(){
+		return String.format("\n%s", name);
+	}
 }

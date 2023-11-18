@@ -4,8 +4,9 @@ import org.CaballeroNillukka.model.Location;
 import org.CaballeroNillukka.model.Weather;
 
 import java.time.Instant;
+import java.util.List;
 
 public interface WeatherProvider {
-	Weather getWeatherData(Location location, Instant timeStamp);
+	List<Weather> getWeatherData(Location location, Instant timeStamp);
 
 }

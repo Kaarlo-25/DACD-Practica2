@@ -2,6 +2,8 @@ package org.CaballeroNillukka.control;
 
 import org.CaballeroNillukka.model.Location;
 
+import java.time.Instant;
+
 public class WeatherController {
 
 	//Constructure
@@ -42,6 +44,7 @@ public class WeatherController {
 
 	//Methods
 	public void execute(){
+		getWeatherProvider().getWeatherData(location, Instant.now());
 		// llamar open weather map y descarga los datos
 		// guardar en sqlite
 	}

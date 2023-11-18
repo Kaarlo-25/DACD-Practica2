@@ -16,8 +16,8 @@ public class SQLiteWeatherStore implements WeatherStore {
 		String dbPath = "database.db";
 		try (Connection connection = connect(dbPath)){
 			Statement statement = connection.createStatement();
-			createTable(statement);
-			//insert(statement);
+			createTables(statement);
+			dropTable(statement);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -36,7 +36,7 @@ public class SQLiteWeatherStore implements WeatherStore {
 		return conn;
 	}
 
-	static void createTable(Statement statement) throws SQLException {
+	static void createTables(Statement statement) throws SQLException {
 		for (int i=0; i<8; i++){
 			String name = locationsList.get(i).getName();
 			statement.execute(String.format("CREATE TABLE IF NOT EXISTS `%s` (" +
@@ -51,6 +51,14 @@ public class SQLiteWeatherStore implements WeatherStore {
 		}
 	}
 
+	static void dropTable(Statement statement) throws SQLException{
+		statement.execute("DROP TABLE IF EXISTS  products ;\n");
+	}
+	@Override
+	public void storeWeatherData(Weather weather, Location location, Instant timestamp) {
+
+	}
+
 	private static boolean insert(Statement statement) throws SQLException {
 		return statement.execute("INSERT INTO products (id,name ,prize)\n" +
 				"VALUES(1, 'hibike', 1995.9),(2, 'orbea', 995.5);");
@@ -63,14 +71,11 @@ public class SQLiteWeatherStore implements WeatherStore {
 		System.out.println("Table products updated");
 	}
 
-	@Override
-	public void storeWeatherData(Weather weather, Location location, Instant timestamp) {
-
-	}
-
-	/*private static void delete(Statement statement) throws SQLException {
+	private static void delete(Statement statement) throws SQLException {
 		statement.execute("DELETE FROM products\n" +
 				"WHERE id=1;");
-	}*/
+	}
+
+
 
 }
