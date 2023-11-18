@@ -65,5 +65,16 @@ public class Weather {
 	}
 
 	//Methods
-
+	@Override
+	public String toString() {
+		return "Weather{" +
+				"temperature=" + temperature +
+				", hummidity=" + hummidity +
+				", rain=" + rain +
+				", windSpeed=" + windSpeed +
+				", clouds=" + clouds +
+				", location=" + location +
+				", timeStamp=" + timeStamp +
+				'}';
+	}
 }

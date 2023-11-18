@@ -44,8 +44,6 @@ public class WeatherController {
 
 	//Methods
 	public void execute(){
-		getWeatherProvider().getWeatherData(location, Instant.now());
-		// llamar open weather map y descarga los datos
-		// guardar en sqlite
+		getWeatherStore().storeWeatherData(getWeatherProvider().getWeatherData(location).get(0));
 	}
 }

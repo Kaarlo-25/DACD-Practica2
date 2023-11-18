@@ -21,27 +21,28 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 	private static final String templateURL = "https://api.openweathermap.org/data/2.5/forecast?lat=%f&lon=%f&cnt=40&appid=%s";
 	private static String apiKey = getApiKey();
 
+
 	@Override
-	public List<Weather> getWeatherData(Location location, Instant timeStamp) {
+	public List<Weather> getWeatherData(Location location) {
 		String requestString = String.format(templateURL, location.getLatitude(), location.getLongitude(), apiKey);
 		try {
 			String jsonResponse = Jsoup.connect(requestString).ignoreContentType(true).execute().body();
 			Gson gson = new Gson();
 			JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
 			JsonArray listArray = jsonObject.getAsJsonArray("list");
-			List<Weather> fiveDays = new ArrayList<>();
+			List<Weather> predictionFiveDays = new ArrayList<>();
 			for (int i = 0; i < listArray.size(); i++) {
 				JsonObject data = listArray.get(i).getAsJsonObject();
 				if (isPrediction(data)) {
 					Weather weather = fromJson2Weather(data, location);
-					fiveDays.add(weather);
-					if (fiveDays.size() == 5) {
+					predictionFiveDays.add(weather);
+					if (predictionFiveDays.size() == 5) {
 						break;
 					}
 				}
 			}
-			System.out.println(fiveDays);
-			return fiveDays;
+			System.out.println(predictionFiveDays);
+			return predictionFiveDays;
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);

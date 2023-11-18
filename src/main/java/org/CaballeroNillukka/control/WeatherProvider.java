@@ -7,6 +7,6 @@ import java.time.Instant;
 import java.util.List;
 
 public interface WeatherProvider {
-	List<Weather> getWeatherData(Location location, Instant timeStamp);
+	List<Weather> getWeatherData(Location location);
 
 }

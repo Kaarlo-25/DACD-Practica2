@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.CaballeroNillukka.model.Location;
+import org.CaballeroNillukka.model.Weather;
 
 
 public class Main {
 	public static List<Location> locationsList = new ArrayList<>();
+	//public static List<Weather> predictionFiveDays = new ArrayList<>();
 	public static void main(String[] args) throws IOException {
 		// cargar locations - Done
 		System.out.println("ENUNCIADO: Cada 6H consultar la API para obtener la predicción meteorológica de las 8 islas para los 5 próximos días a las 12pm de cada día.\n");

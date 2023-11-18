@@ -1,14 +1,10 @@
 package org.CaballeroNillukka.control;
 
-import org.CaballeroNillukka.model.Location;
 import org.CaballeroNillukka.model.Weather;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
-
 import static org.CaballeroNillukka.control.Main.locationsList;
 
 public class SQLiteWeatherStore implements WeatherStore {
@@ -55,7 +51,7 @@ public class SQLiteWeatherStore implements WeatherStore {
 		statement.execute("DROP TABLE IF EXISTS  products ;\n");
 	}
 	@Override
-	public void storeWeatherData(Weather weather, Location location, Instant timestamp) {
+	public void storeWeatherData(Weather weather) {
 
 	}
 
