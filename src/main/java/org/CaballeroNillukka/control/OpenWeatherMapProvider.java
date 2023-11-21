@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import org.CaballeroNillukka.model.Location;
 import org.CaballeroNillukka.model.Weather;
 import org.jsoup.Jsoup;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +22,7 @@ import java.util.List;
 public class OpenWeatherMapProvider implements WeatherProvider {
 	private static final String templateURL = "https://api.openweathermap.org/data/2.5/forecast?lat=%f&lon=%f&cnt=40&appid=%s";
 	private static String apiKey = getApiKey();
-
+	public static List<Location> locationsList = new ArrayList<>();
 
 	@Override
 	public List<Weather> getWeatherData(Location location) {
@@ -41,7 +43,6 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 					}
 				}
 			}
-			System.out.println(predictionFiveDays);
 			return predictionFiveDays;
 		}
 		catch (IOException e) {
@@ -51,13 +52,30 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 
 	public static String getApiKey() {
 		try {
-			apiKey = Files.readString(Path.of("C:\\Users\\valko\\IdeaProjects\\DACD-Practica1\\src\\main\\resources\\ApiKey.txt"));
+			apiKey = Files.readString(Path.of("src/main/resources/ApiKey.txt"));
 			apiKey = apiKey.replaceAll("[^a-zA-Z0-9]", "");
-			System.out.printf("API key read succesfully: %s\n", apiKey);
+			System.out.print("API key read succesfully.\n");
 			return apiKey;
 		} catch (Exception e) {
 			System.out.println(e.getMessage() + "There was an error getting API key from file.\n");
 			return null;
+		}
+	}
+
+	public static void loadLocationsFromFile(String filePath){
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(filePath));
+			String fileLine;
+			while ((fileLine = reader.readLine()) != null && !fileLine.equals("\n")) {
+				String name = List.of(fileLine.split("\t")).get(0);
+				float latitude = Float.parseFloat(List.of(fileLine.split("\t")).get(1));
+				float longitude = Float.parseFloat(List.of(fileLine.split("\t")).get(2));
+				Location location = new Location(name, latitude, longitude);
+				locationsList.add(location);
+			}
+			System.out.println("Locations from file saved succesfully.\n");
+		} catch (Exception e) {
+			System.out.println(e.getMessage()+"There was an error getting locations from files.\n");
 		}
 	}
 

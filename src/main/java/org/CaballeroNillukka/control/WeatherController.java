@@ -1,49 +1,35 @@
 package org.CaballeroNillukka.control;
 
 import org.CaballeroNillukka.model.Location;
-
-import java.time.Instant;
+import org.CaballeroNillukka.model.Weather;
+import java.util.List;
 
 public class WeatherController {
 
 	//Constructure
-	private Location location;
-	private int days;
-	private WeatherProvider weatherProvider;
-	private WeatherStore weatherStore;
-	public WeatherController(Location location, int days, WeatherProvider weatherProvider, WeatherStore weatherStore) {
-		this.location = location;
-		this.days = days;
+	private final List<Location> locations;
+	private final WeatherProvider weatherProvider;
+	private final WeatherStore weatherStore;
+	public WeatherController(List <Location> locations, WeatherProvider weatherProvider, WeatherStore weatherStore) {
+		this.locations = locations;
 		this.weatherProvider = weatherProvider;
-		this.weatherStore = weatherStore;
-	}
-	public Location getLocation() {
-		return location;
-	}
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-	public int getDays() {
-		return days;
-	}
-	public void setDays(int days) {
-		this.days = days;
-	}
-	public WeatherProvider getWeatherProvider() {
-		return weatherProvider;
-	}
-	public void setWeatherProvider(WeatherProvider weatherProvider) {
-		this.weatherProvider = weatherProvider;
-	}
-	public WeatherStore getWeatherStore() {
-		return weatherStore;
-	}
-	public void setWeatherStore(WeatherStore weatherStore) {
 		this.weatherStore = weatherStore;
 	}
 
 	//Methods
+	public static void executePreparation(){
+		OpenWeatherMapProvider.loadLocationsFromFile("src/main/resources/Locations.tsv");
+		SQLiteWeatherStore.createDatabase();
+	}
+
 	public void execute(){
-		getWeatherStore().storeWeatherData(getWeatherProvider().getWeatherData(location).get(0));
+		for (int i=0; i<8; i++){
+			List <Weather> weathers = weatherProvider.getWeatherData(this.locations.get(i));
+			System.out.printf("+ %s: \n\t- Success obtaining the data.\n", this.locations.get(i).getName());
+			for (Weather weather: weathers){
+				weatherStore.storeWeatherData(weather);
+			}
+			System.out.println("\t- Success storing the data.");
+		}
 	}
 }
