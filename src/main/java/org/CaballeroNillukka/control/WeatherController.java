@@ -2,7 +2,10 @@ package org.CaballeroNillukka.control;
 
 import org.CaballeroNillukka.model.Location;
 import org.CaballeroNillukka.model.Weather;
+
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WeatherController {
 
@@ -10,26 +13,37 @@ public class WeatherController {
 	private final List<Location> locations;
 	private final WeatherProvider weatherProvider;
 	private final WeatherStore weatherStore;
-	public WeatherController(List <Location> locations, WeatherProvider weatherProvider, WeatherStore weatherStore) {
+
+	public WeatherController(List<Location> locations, WeatherProvider weatherProvider, WeatherStore weatherStore) {
 		this.locations = locations;
 		this.weatherProvider = weatherProvider;
 		this.weatherStore = weatherStore;
 	}
 
 	//Methods
-	public static void executePreparation(){
+	public static void executePreparation() {
 		OpenWeatherMapProvider.loadLocationsFromFile("src/main/resources/Locations.tsv");
 		SQLiteWeatherStore.createDatabase();
 	}
 
-	public void execute(){
-		for (int i=0; i<8; i++){
-			List <Weather> weathers = weatherProvider.getWeatherData(this.locations.get(i));
-			System.out.printf("+ %s: \n\t- Success obtaining the data.\n", this.locations.get(i).getName());
-			for (Weather weather: weathers){
-				weatherStore.storeWeatherData(weather);
+	public void execute() {
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				// Código a ejecutar cada 6 horas
+				for (int i = 0; i < 8; i++) {
+					List<Weather> weathers = weatherProvider.getWeatherData(locations.get(i));
+					System.out.printf("+ %s: \n\t- Success obtaining the data.\n", locations.get(i).getName());
+					for (Weather weather : weathers) {
+						weatherStore.storeWeatherData(weather);
+					}
+					System.out.println("\t- Success storing the data.");
+				}
 			}
-			System.out.println("\t- Success storing the data.");
-		}
+		};
+		long periodicity = 5 * 1000; //6 * 60 * 60 * 1000;
+		timer.scheduleAtFixedRate(task, 0, periodicity);
 	}
 }
+

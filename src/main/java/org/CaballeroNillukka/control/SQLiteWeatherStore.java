@@ -60,17 +60,20 @@ public class SQLiteWeatherStore implements WeatherStore {
 	}
 
 	private static void updateTable(Statement statement, List<String> listOfValues) throws SQLException {
-		statement.execute(String.format(/*INSERT OR*/ "REPLACE INTO `%s` (Day, Temperature, Rain, Humidity, Clouds, WindSpeed, Latitude, Longitude) " +
+		// TODO resolve date format when updating
+		statement.execute(String.format("INSERT OR REPLACE INTO `%s` (Day, Temperature, Rain, Humidity, Clouds, WindSpeed, Latitude, Longitude) " +
 						"VALUES (%s, %s, %s, %s, %s, %s, %s, %s);", listOfValues.get(0), listOfValues.get(1), listOfValues.get(2),
 				listOfValues.get(3), listOfValues.get(4), listOfValues.get(5), listOfValues.get(6), listOfValues.get(7), listOfValues.get(8)));
 	}
 
 	private static List<String> prepareTableValues(Weather weather){
 		String name = weather.getLocation().getName();
+
 		Instant instant = weather.getTimeStamp();
 		LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String day = formatter.format(localDate);
+
 		String temperature = Float.toString(weather.getTemperature());
 		String humidity = Integer.toString(weather.getHummidity());
 		String rain = Float.toString(weather.getRain());

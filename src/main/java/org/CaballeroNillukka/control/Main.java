@@ -11,11 +11,7 @@ public class Main {
 		WeatherProvider weatherProvider = new OpenWeatherMapProvider();
 		WeatherStore weatherStore =  new SQLiteWeatherStore();
 		WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
-
-		//TODO hacer que sea periodica la ejecución
 		weatherController.execute();
 	}
-
-
 }
 
