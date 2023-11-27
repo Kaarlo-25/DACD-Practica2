@@ -9,19 +9,17 @@ import org.jsoup.Jsoup;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import static org.CaballeroNillukka.control.Main.apiKey;
 
 
 public class OpenWeatherMapProvider implements WeatherProvider {
 	private static final String templateURL = "https://api.openweathermap.org/data/2.5/forecast?lat=%f&lon=%f&cnt=40&appid=%s";
-	private static String apiKey = getApiKey();
 	public static List<Location> locationsList = new ArrayList<>();
 
 	@Override
@@ -47,18 +45,6 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-	}
-
-	public static String getApiKey() {
-		try {
-			apiKey = Files.readString(Path.of("src/main/resources/ApiKey.txt"));
-			apiKey = apiKey.replaceAll("[^a-zA-Z0-9]", "");
-			System.out.print("API key read succesfully.\n");
-			return apiKey;
-		} catch (Exception e) {
-			System.out.println(e.getMessage() + "There was an error getting API key from file.\n");
-			return null;
 		}
 	}
 

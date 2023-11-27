@@ -11,11 +11,11 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import static org.CaballeroNillukka.control.Main.databasePath;
 
 public class SQLiteWeatherStore implements WeatherStore {
-	public static String dbPath = "database.db";
 	public static void createDatabase(){
-		try (Connection connection = connect(dbPath)){
+		try (Connection connection = connect(databasePath)){
 			Statement statement = connection.createStatement();
 			createTables(statement);
 		} catch (SQLException e) {
@@ -49,9 +49,10 @@ public class SQLiteWeatherStore implements WeatherStore {
 					"Longitude TEXT);", name));
 		}
 	}
+
 	@Override
 	public void storeWeatherData(Weather weather) {
-		try (Connection connection = connect(dbPath)){
+		try (Connection connection = connect(databasePath)){
 			Statement statement = connection.createStatement();
 			updateTable(statement, prepareTableValues(weather));
 		} catch (SQLException e) {

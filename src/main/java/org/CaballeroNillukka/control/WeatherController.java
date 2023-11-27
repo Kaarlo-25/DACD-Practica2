@@ -2,7 +2,6 @@ package org.CaballeroNillukka.control;
 
 import org.CaballeroNillukka.model.Location;
 import org.CaballeroNillukka.model.Weather;
-
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,7 +12,6 @@ public class WeatherController {
 	private final List<Location> locations;
 	private final WeatherProvider weatherProvider;
 	private final WeatherStore weatherStore;
-
 	public WeatherController(List<Location> locations, WeatherProvider weatherProvider, WeatherStore weatherStore) {
 		this.locations = locations;
 		this.weatherProvider = weatherProvider;
@@ -31,7 +29,6 @@ public class WeatherController {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				// Código a ejecutar cada 6 horas
 				for (int i = 0; i < 8; i++) {
 					List<Weather> weathers = weatherProvider.getWeatherData(locations.get(i));
 					System.out.printf("+ %s: \n\t- Success obtaining the data.\n", locations.get(i).getName());
