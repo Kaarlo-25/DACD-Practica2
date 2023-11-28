@@ -33,7 +33,7 @@ public class WeatherController {
 				}
 			}
 		};
-		long periodicity = 5 * 1000; //6 * 60 * 60 * 1000;
+		long periodicity = 6 * 60 * 60 * 1000;
 		timer.scheduleAtFixedRate(task, 0, periodicity);
 	}
 }

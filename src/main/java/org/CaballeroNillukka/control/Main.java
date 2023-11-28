@@ -15,16 +15,12 @@ public class Main {
 		databasePath = args[1];
 		System.out.println("\nENUNCIADO: Obtener cada 6H la predicción meteorológica de los 5 próximos días a las 12:00H para cada una de las 8 islas.\n");
 
-
-
 		List<Location> locationsList = loadLocations();
 		OpenWeatherMapProvider weatherProvider = new OpenWeatherMapProvider(apiKey);
 		SQLiteWeatherStore weatherStore = new SQLiteWeatherStore(new File(databasePath));
 		weatherStore.init(locationsList);
 		WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
 		weatherController.execute();
-		//
-		//
 	}
 
 	public static List<Location> loadLocations(){
