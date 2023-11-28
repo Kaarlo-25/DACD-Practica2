@@ -9,19 +9,13 @@ import java.util.TimerTask;
 public class WeatherController {
 
 	//Constructure
-	private final List<Location> locations;
+	private final List<Location> locationsList;
 	private final WeatherProvider weatherProvider;
 	private final WeatherStore weatherStore;
-	public WeatherController(List<Location> locations, WeatherProvider weatherProvider, WeatherStore weatherStore) {
-		this.locations = locations;
+	public WeatherController(List<Location> locationsList, WeatherProvider weatherProvider, WeatherStore weatherStore) {
+		this.locationsList = locationsList;
 		this.weatherProvider = weatherProvider;
 		this.weatherStore = weatherStore;
-	}
-
-	//Methods
-	public static void executePreparation() {
-		OpenWeatherMapProvider.loadLocationsFromFile("src/main/resources/Locations.tsv");
-		SQLiteWeatherStore.createDatabase();
 	}
 
 	public void execute() {
@@ -30,8 +24,8 @@ public class WeatherController {
 			@Override
 			public void run() {
 				for (int i = 0; i < 8; i++) {
-					List<Weather> weathers = weatherProvider.getWeatherData(locations.get(i));
-					System.out.printf("+ %s: \n\t- Success obtaining the data.\n", locations.get(i).getName());
+					List<Weather> weathers = weatherProvider.getWeatherData(locationsList.get(i));
+					System.out.printf("+ %s: \n\t- Success obtaining the data.\n", locationsList.get(i).getName());
 					for (Weather weather : weathers) {
 						weatherStore.storeWeatherData(weather);
 					}

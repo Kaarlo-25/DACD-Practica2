@@ -22,7 +22,13 @@ public class Location {
 	}
 
 	//Methods
-	public String toString(){
-		return String.format("\n%s", name);
+
+	@Override
+	public String toString() {
+		return "Location{" +
+				"name='" + name + '\'' +
+				", latitude=" + latitude +
+				", longitude=" + longitude +
+				'}';
 	}
 }

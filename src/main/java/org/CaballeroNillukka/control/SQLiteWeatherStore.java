@@ -1,6 +1,9 @@
 package org.CaballeroNillukka.control;
 
+import org.CaballeroNillukka.model.Location;
 import org.CaballeroNillukka.model.Weather;
+
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,22 +14,29 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import static org.CaballeroNillukka.control.Main.databasePath;
 
 public class SQLiteWeatherStore implements WeatherStore {
-	public static void createDatabase(){
-		try (Connection connection = connect(databasePath)){
+	//Constructure
+	private final File file;
+	public SQLiteWeatherStore(File file) {
+		this.file = file;
+	}
+
+
+	//Methods
+	public void init(List<Location> locations) {
+		try (Connection connection = connect()) {
 			Statement statement = connection.createStatement();
-			createTables(statement);
+			createTables(statement, locations);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static Connection connect(String dbPath) {
+	public Connection connect() {
 		Connection conn = null;
 		try {
-			String url = "jdbc:sqlite:" + dbPath;
+			String url = "jdbc:sqlite:" + file.getAbsolutePath();
 			conn = DriverManager.getConnection(url);
 			return conn;
 		} catch (SQLException e) {
@@ -35,9 +45,9 @@ public class SQLiteWeatherStore implements WeatherStore {
 		return conn;
 	}
 
-	static void createTables(Statement statement) throws SQLException {
-		for (int i=0; i<8; i++){
-			String name = OpenWeatherMapProvider.locationsList.get(i).getName();
+	static void createTables(Statement statement, List<Location> locations) throws SQLException {
+		for (int i = 0; i < 8; i++) {
+			String name = locations.get(i).getName();
 			statement.execute(String.format("CREATE TABLE IF NOT EXISTS `%s` (" +
 					"Day TEXT PRIMARY KEY," +
 					"Temperature TEXT," +
@@ -52,7 +62,7 @@ public class SQLiteWeatherStore implements WeatherStore {
 
 	@Override
 	public void storeWeatherData(Weather weather) {
-		try (Connection connection = connect(databasePath)){
+		try (Connection connection = connect()) {
 			Statement statement = connection.createStatement();
 			updateTable(statement, prepareTableValues(weather));
 		} catch (SQLException e) {
@@ -60,20 +70,22 @@ public class SQLiteWeatherStore implements WeatherStore {
 		}
 	}
 
-	private static void updateTable(Statement statement, List<String> listOfValues) throws SQLException {
+	private void updateTable(Statement statement, List<String> listOfValues) throws SQLException {
 		// TODO resolve date format when updating
 		statement.execute(String.format("INSERT OR REPLACE INTO `%s` (Day, Temperature, Rain, Humidity, Clouds, WindSpeed, Latitude, Longitude) " +
 						"VALUES (%s, %s, %s, %s, %s, %s, %s, %s);", listOfValues.get(0), listOfValues.get(1), listOfValues.get(2),
 				listOfValues.get(3), listOfValues.get(4), listOfValues.get(5), listOfValues.get(6), listOfValues.get(7), listOfValues.get(8)));
 	}
 
-	private static List<String> prepareTableValues(Weather weather){
+	private List<String> prepareTableValues(Weather weather) {
 		String name = weather.getLocation().getName();
 
 		Instant instant = weather.getTimeStamp();
 		LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String day = formatter.format(localDate);
+		String day = localDate.toString().substring(8, 10);
+		System.out.println(day);
+		//String day = formatter.format(localDate);
 
 		String temperature = Float.toString(weather.getTemperature());
 		String humidity = Integer.toString(weather.getHummidity());

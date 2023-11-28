@@ -6,8 +6,6 @@ import com.google.gson.JsonObject;
 import org.CaballeroNillukka.model.Location;
 import org.CaballeroNillukka.model.Weather;
 import org.jsoup.Jsoup;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -15,15 +13,18 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import static org.CaballeroNillukka.control.Main.apiKey;
 
 
 public class OpenWeatherMapProvider implements WeatherProvider {
-	private static final String templateURL = "https://api.openweathermap.org/data/2.5/forecast?lat=%f&lon=%f&cnt=40&appid=%s";
-	public static List<Location> locationsList = new ArrayList<>();
+	private final String apiKey;
+	public OpenWeatherMapProvider(String apiKey) {
+		this.apiKey = apiKey;
+	}
 
+	//Methods
 	@Override
 	public List<Weather> getWeatherData(Location location) {
+		String templateURL = "https://api.openweathermap.org/data/2.5/forecast?lat=%f&lon=%f&cnt=40&appid=%s";
 		String requestString = String.format(templateURL, location.getLatitude(), location.getLongitude(), apiKey);
 		try {
 			String jsonResponse = Jsoup.connect(requestString).ignoreContentType(true).execute().body();
@@ -45,23 +46,6 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-	}
-
-	public static void loadLocationsFromFile(String filePath){
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filePath));
-			String fileLine;
-			while ((fileLine = reader.readLine()) != null && !fileLine.equals("\n")) {
-				String name = List.of(fileLine.split("\t")).get(0);
-				float latitude = Float.parseFloat(List.of(fileLine.split("\t")).get(1));
-				float longitude = Float.parseFloat(List.of(fileLine.split("\t")).get(2));
-				Location location = new Location(name, latitude, longitude);
-				locationsList.add(location);
-			}
-			System.out.println("Locations from file saved succesfully.\n");
-		} catch (Exception e) {
-			System.out.println(e.getMessage()+"There was an error getting locations from files.\n");
 		}
 	}
 

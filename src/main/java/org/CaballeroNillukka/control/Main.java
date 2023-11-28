@@ -1,31 +1,62 @@
 package org.CaballeroNillukka.control;
 
-import java.util.Scanner;
-
-import static org.CaballeroNillukka.control.OpenWeatherMapProvider.*;
+import org.CaballeroNillukka.model.Location;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
 	public static String apiKey;
 	public static String databasePath;
+	public static List<Location> locationsList = new ArrayList<>();
 	public static void main(String[] args) {
-		//apiKey = args[0];
-		//databasePath = args[1];
-		System.out.print("\nENUNCIADO: Obtener cada 6H la predicción meteorológica de los 5 próximos días a las 12:00H para cada una de las 8 islas.\n");
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Please, introduce your API Key: ");
-		apiKey = scanner.nextLine();
-		System.out.print("Please, introduce your database path: ");
-		databasePath = scanner.nextLine();
+		apiKey = args[0];
+		databasePath = args[1];
+		System.out.println("\nENUNCIADO: Obtener cada 6H la predicción meteorológica de los 5 próximos días a las 12:00H para cada una de las 8 islas.\n");
 
-		//TODO how to read locations file once the code is compiled
-		//TODO eliminate as much static methods as possible
 
-		WeatherProvider weatherProvider = new OpenWeatherMapProvider();
-		WeatherStore weatherStore = new SQLiteWeatherStore();
-		WeatherController.executePreparation();
+
+		List<Location> locationsList = loadLocations();
+		OpenWeatherMapProvider weatherProvider = new OpenWeatherMapProvider(apiKey);
+		SQLiteWeatherStore weatherStore = new SQLiteWeatherStore(new File(databasePath));
+		weatherStore.init(locationsList);
 		WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
 		weatherController.execute();
+		//
+		//
+	}
+
+	public static List<Location> loadLocations(){
+		String locationsFile = "Locations.tsv";
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream inputStream = classLoader.getResourceAsStream(locationsFile);
+		if (inputStream != null) {
+			try {
+				int charactersRead;
+				String fileLine = "";
+				while ((charactersRead = inputStream.read()) != -1) {
+					char character = (char) charactersRead;
+					fileLine = fileLine + character;
+					if (String.valueOf(character).equals("\n")){
+						String name = List.of(fileLine.split("\t")).get(0);
+						float latitude = Float.parseFloat(List.of(fileLine.split("\t")).get(1));
+						float longitude = Float.parseFloat(List.of(fileLine.split("\t")).get(2));
+						Location location = new Location(name, latitude, longitude);
+						locationsList.add(location);
+						fileLine = "";
+					}
+				}
+				inputStream.close();
+				System.out.println("Success getting locations.\n");
+				return locationsList;
+			} catch (IOException e) {
+				System.out.println(e+"Failure reading Locations.tsv file.\n");
+			}
+		} else {
+			System.out.println("It is not possible to find Locations.tsv file.\n");
+		}
+		return null;
 	}
 }
 
