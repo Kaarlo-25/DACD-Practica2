@@ -3,15 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.CaballeroNillukka</groupId>
+        <artifactId>DACD-Practica2</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
-    <groupId>org.CaballeroNillukka</groupId>
-    <artifactId>DACD-Practica2</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <modules>
-        <module>event-store-builder</module>
-        <module>prediction-provider</module>
-    </modules>
+    <artifactId>prediction-provider</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -21,12 +19,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>3.42.0.0</version>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.16.2</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
     </dependencies>
+
 </project>

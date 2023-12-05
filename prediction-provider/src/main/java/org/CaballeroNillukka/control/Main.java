@@ -21,6 +21,11 @@ public class Main {
 		weatherStore.init(locationsList);
 		WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
 		weatherController.execute();
+
+		//TODO sustituir SQLiteWeatherStore por JMSWeatherStore
+		//TODO conectar JMSWeatherStore con un broker
+		//TODO llamar JMSWeatherStore desde aqui, el Main
+		//TODO comprimir modulo de la practica 1 y meterlo en el pom
 	}
 
 	public static List<Location> loadLocations(){
