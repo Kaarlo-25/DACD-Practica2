@@ -7,17 +7,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class WeatherController {
-
-	//Constructure
+	//Constructor
 	private final List<Location> locationsList;
 	private final WeatherProvider weatherProvider;
-	private WeatherStore weatherStore;
-	public WeatherController(List<Location> locationsList, WeatherProvider weatherProvider, WeatherStore weatherStore) {
+	private final EventPublisher weatherStore;
+	public WeatherController(List<Location> locationsList, WeatherProvider weatherProvider, EventPublisher weatherStore) {
 		this.locationsList = locationsList;
 		this.weatherProvider = weatherProvider;
 		this.weatherStore = weatherStore;
 	}
 
+	//Methods
 	public void execute() {
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
@@ -27,9 +27,9 @@ public class WeatherController {
 					List<Weather> weathers = weatherProvider.getWeatherData(locationsList.get(i));
 					System.out.printf("+ %s: \n\t- Success obtaining the data.\n", locationsList.get(i).getName());
 					for (Weather weather : weathers) {
-						weatherStore.storeWeatherData(weather);
+						weatherStore.publishWeatherData(weather);
 					}
-					System.out.println("\t- Success storing the data.");
+					System.out.println("\t- Success sending the data message.");
 				}
 			}
 		};

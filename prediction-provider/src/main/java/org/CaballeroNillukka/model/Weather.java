@@ -14,7 +14,6 @@ public class Weather {
 	private final String predictionTime;
 	private final String dataSource;
 	private final String eventTime;
-
 	public Weather(float temperature, int hummidity, float rain, float windSpeed, float clouds, Location location, String predictionTime, String eventTime) {
 		this.temperature = temperature;
 		this.hummidity = hummidity;
