@@ -16,6 +16,7 @@ import java.util.List;
 
 
 public class OpenWeatherMapProvider implements WeatherProvider {
+	//Constructor
 	private final String apiKey;
 	public OpenWeatherMapProvider(String apiKey) {
 		this.apiKey = apiKey;
@@ -48,7 +49,6 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 			throw new RuntimeException(e);
 		}
 	}
-
 	private boolean isPrediction(JsonObject data) {
 		int predictionDateTime = data.get("dt").getAsInt();
 		Instant instant = Instant.ofEpochSecond(predictionDateTime);
@@ -56,7 +56,6 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 		LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
 		return localDateTime.getHour() == 12 && localDateTime.getMinute() == 0;
 	}
-
 	private Weather fromJson2Weather(JsonObject data, Location location) {
 		JsonObject mainData = data.getAsJsonObject("main");
 		JsonObject rainData = data.getAsJsonObject("rain");

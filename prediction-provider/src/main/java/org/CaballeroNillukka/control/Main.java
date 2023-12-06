@@ -1,5 +1,6 @@
 package org.CaballeroNillukka.control;
 
+import jakarta.jms.JMSException;
 import org.CaballeroNillukka.model.Location;
 import java.io.*;
 import java.util.ArrayList;
@@ -8,24 +9,18 @@ import java.util.List;
 
 public class Main {
 	public static String apiKey;
-	public static String databasePath;
 	public static List<Location> locationsList = new ArrayList<>();
-	public static void main(String[] args) {
-		apiKey = args[0];
-		databasePath = args[1];
+	public static void main(String[] args) throws JMSException {
+		apiKey = "6c4a8333e1cf9e8ad0c584569528f8b8"; //args[0];
 		System.out.println("\nENUNCIADO: Obtener cada 6H la predicción meteorológica de los 5 próximos días a las 12:00H para cada una de las 8 islas.\n");
 
 		List<Location> locationsList = loadLocations();
 		OpenWeatherMapProvider weatherProvider = new OpenWeatherMapProvider(apiKey);
-		SQLiteWeatherStore weatherStore = new SQLiteWeatherStore(new File(databasePath));
-		weatherStore.init(locationsList);
-		WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
-		weatherController.execute();
+		JMSWeatherStore weatherStore = new JMSWeatherStore();
+		weatherStore.execute();
+		//WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
+		//weatherController.execute();
 
-		//TODO sustituir SQLiteWeatherStore por JMSWeatherStore
-		//TODO conectar JMSWeatherStore con un broker
-		//TODO llamar JMSWeatherStore desde aqui, el Main
-		//TODO comprimir modulo de la practica 1 y meterlo en el pom
 	}
 
 	public static List<Location> loadLocations(){
