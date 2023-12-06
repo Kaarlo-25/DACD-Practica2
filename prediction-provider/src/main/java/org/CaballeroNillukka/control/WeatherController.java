@@ -11,7 +11,7 @@ public class WeatherController {
 	//Constructure
 	private final List<Location> locationsList;
 	private final WeatherProvider weatherProvider;
-	private final WeatherStore weatherStore;
+	private WeatherStore weatherStore;
 	public WeatherController(List<Location> locationsList, WeatherProvider weatherProvider, WeatherStore weatherStore) {
 		this.locationsList = locationsList;
 		this.weatherProvider = weatherProvider;

@@ -2,6 +2,7 @@ package org.CaballeroNillukka.control;
 
 import jakarta.jms.JMSException;
 import org.CaballeroNillukka.model.Location;
+import org.apache.activemq.ActiveMQConnection;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,10 @@ public class Main {
 
 		List<Location> locationsList = loadLocations();
 		OpenWeatherMapProvider weatherProvider = new OpenWeatherMapProvider(apiKey);
-		JMSWeatherStore weatherStore = new JMSWeatherStore();
-		weatherStore.execute();
-		//WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
-		//weatherController.execute();
+		JMSWeatherStore weatherStore = new JMSWeatherStore(ActiveMQConnection.DEFAULT_BROKER_URL, "JCG_QUEUE");
+
+		WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
+		weatherController.execute();
 
 	}
 

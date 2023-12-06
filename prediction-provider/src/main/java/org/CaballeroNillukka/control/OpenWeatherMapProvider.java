@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +62,18 @@ public class OpenWeatherMapProvider implements WeatherProvider {
 		JsonObject rainData = data.getAsJsonObject("rain");
 		JsonObject cloudsData = data.getAsJsonObject("clouds");
 		JsonObject windData = data.getAsJsonObject("wind");
+
 		float temperature = (float) mainData.get("temp").getAsDouble();
 		int humidity = mainData.get("humidity").getAsInt();
 		float rain = (float) ((rainData != null && rainData.has("3h")) ? rainData.get("3h").getAsDouble() : 0.0);
 		int clouds = cloudsData.get("all").getAsInt();
 		float windSpeed = (float) windData.get("speed").getAsDouble();
-		return new Weather(temperature, humidity, rain, windSpeed, clouds, location, Instant.ofEpochSecond(data.get("dt").getAsLong()));
+		String predictionTime = String.valueOf(data.get("dt_txt")).replace("\"", "");
+		Instant instant = Instant.now();
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String eventTime = formatter.format(localDateTime);
+		return new Weather(temperature, humidity, rain, windSpeed, clouds, location, predictionTime, eventTime);
+
 	}
 }

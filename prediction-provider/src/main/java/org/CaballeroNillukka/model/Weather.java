@@ -11,36 +11,20 @@ public class Weather {
 	private final float windSpeed;
 	private final float clouds;
 	private final Location location;
-	private final Instant timeStamp;
-	public Weather(float temperature, int hummidity, float rain, float windSpeed, float clouds, Location location, Instant timeStamp) {
+	private final String predictionTime;
+	private final String dataSource;
+	private final String eventTime;
+
+	public Weather(float temperature, int hummidity, float rain, float windSpeed, float clouds, Location location, String predictionTime, String eventTime) {
 		this.temperature = temperature;
 		this.hummidity = hummidity;
 		this.rain = rain;
 		this.windSpeed = windSpeed;
 		this.clouds = clouds;
 		this.location = location;
-		this.timeStamp = timeStamp;
-	}
-	public float getTemperature() {
-		return temperature;
-	}
-	public int getHummidity() {
-		return hummidity;
-	}
-	public float getRain() {
-		return rain;
-	}
-	public float getWindSpeed() {
-		return windSpeed;
-	}
-	public float getClouds() {
-		return clouds;
-	}
-	public Location getLocation() {
-		return location;
-	}
-	public Instant getTimeStamp() {
-		return timeStamp;
+		this.predictionTime = predictionTime;
+		this.eventTime = eventTime;
+		this.dataSource = "Prediction-provider";
 	}
 
 	//Methods
@@ -53,7 +37,9 @@ public class Weather {
 				", windSpeed=" + windSpeed +
 				", clouds=" + clouds +
 				", location=" + location +
-				", timeStamp=" + timeStamp +
+				", predictionTime=" + predictionTime +
+				", dataSource='" + dataSource + '\'' +
+				", eventTime=" + eventTime +
 				'}';
 	}
 }
