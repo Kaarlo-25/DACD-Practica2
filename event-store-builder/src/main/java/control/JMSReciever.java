@@ -2,7 +2,6 @@ package control;
 
 import jakarta.jms.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class JMSReciever implements EventSuscriptor {
 	@Override
 	public List<String> getEvents() {
 		List<String> events = new ArrayList<>();
-		String event = null;
+		String event;
 		try {
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerURL);
 			Connection connection = connectionFactory.createConnection();
@@ -32,8 +31,7 @@ public class JMSReciever implements EventSuscriptor {
 				if (message == null) {
 					break;
 				}
-				if (message instanceof TextMessage) {
-					TextMessage textMessage = (TextMessage) message;
+				if (message instanceof TextMessage textMessage) {
 					event = textMessage.getText();
 					message.acknowledge();
 					events.add(event);
@@ -42,7 +40,7 @@ public class JMSReciever implements EventSuscriptor {
 			connection.close();
 			return events;
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("ERROR: " + e);
 		}
 		return null;
 	}

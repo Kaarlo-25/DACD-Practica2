@@ -1,22 +1,26 @@
 package org.CaballeroNillukka.control;
 
 import org.CaballeroNillukka.model.Location;
-import org.apache.activemq.ActiveMQConnection;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 	public static String apiKey;
+	public static String brokerURL;
+	public static String brokerSubject;
 	public static List<Location> locationsList = new ArrayList<>();
+
 	public static void main(String[] args){
-		apiKey = "6c4a8333e1cf9e8ad0c584569528f8b8"; //args[0];
+		apiKey = args[0];
+		brokerURL = args[1];
+		brokerSubject = args[2];
+
 		System.out.println("\nENUNCIADO: Obtener cada 6H la predicción meteorológica de los 5 próximos días a las 12:00H para cada una de las 8 islas.\n");
 
 		List<Location> locationsList = loadLocations();
 		OpenWeatherMapProvider weatherProvider = new OpenWeatherMapProvider(apiKey);
-		JMSWeatherStore weatherStore = new JMSWeatherStore(ActiveMQConnection.DEFAULT_BROKER_URL, "JCG_QUEUE");
-
+		JMSWeatherStore weatherStore = new JMSWeatherStore(brokerURL, brokerSubject);
 		WeatherController weatherController = new WeatherController(locationsList, weatherProvider, weatherStore);
 		weatherController.execute();
 	}

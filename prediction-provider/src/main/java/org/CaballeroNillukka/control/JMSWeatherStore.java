@@ -14,8 +14,8 @@ import javax.jms.TextMessage;
 
 public class JMSWeatherStore implements EventPublisher {
 	//Constructor
-	private final String brokerURL;	// default broker URL is : tcp://localhost:61616"
-	private final String subject; // Queue Name.You can create any/many queue names as per your requirement.
+	private final String brokerURL;
+	private final String subject;
 	public JMSWeatherStore(String brokerURL, String subject) {
 		this.brokerURL = brokerURL;
 		this.subject = subject;
@@ -27,12 +27,12 @@ public class JMSWeatherStore implements EventPublisher {
 		Gson gson = new Gson();
 		String event = gson.toJson(weather);
 		try {
-			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerURL);	//crea un objeto activeMQ
-			Connection connection = connectionFactory.createConnection();	//establecer conexiones con un servidor de ActiveMQ.
-			connection.start();	//Empieza la API
-			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); //Creating a non-transactional session to send/receive JMS message.
-			Destination destination = session.createQueue(subject); //Destination represents here our queue 'JCG_QUEUE' on the JMS server.
-			MessageProducer producer = session.createProducer(destination); // MessageProducer is used for sending messages to the queue.
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerURL);
+			Connection connection = connectionFactory.createConnection();
+			connection.start();
+			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			Destination destination = session.createQueue(subject);
+			MessageProducer producer = session.createProducer(destination);
 			TextMessage message = session.createTextMessage(event);
 			producer.send(message);
 			connection.close();
@@ -40,6 +40,5 @@ public class JMSWeatherStore implements EventPublisher {
 			throw new RuntimeException(e);
 		}
 	}
-
 
 }

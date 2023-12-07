@@ -1,7 +1,5 @@
 package control;
 
-import com.google.gson.JsonObject;
-
 import java.util.List;
 
 public class EventsController {
@@ -15,11 +13,19 @@ public class EventsController {
 
 	//Methods
 	public void execute(){
-		List<String> events =  eventSuscriptor.getEvents();
-		for (String event : events){
-			System.out.println(event);
-			eventStorer.storeEvents(event);
-			System.out.println("\n\t- Event stored correctly.\n");
+		try{
+			List<String> events =  eventSuscriptor.getEvents();
+			if (events.isEmpty()){
+				System.out.println("\n\t- Events list is empty.");
+			} else {
+				System.out.println("\n\t- Events received correctly.");
+				for (String event : events){
+					eventStorer.storeEvents(event);
+				}
+				System.out.println("\n\t- Events stored correctly.\n");
+			}
+		}catch(Exception e){
+			System.out.println("ERROR: " + e);
 		}
 	}
 }
