@@ -5,12 +5,12 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JMSReciever implements EventSuscriptor {
+public class JMSReceiver implements EventSuscriptor {
 	// Constructor
 	private final String brokerURL;
 	private final String subject;
 
-	public JMSReciever(String url, String subject) {
+	public JMSReceiver(String url, String subject) {
 		this.brokerURL = url;
 		this.subject = subject;
 	}

@@ -22,7 +22,7 @@ public class EventsController {
 				for (String event : events){
 					eventStorer.storeEvents(event);
 				}
-				System.out.println("\n\t- Events stored correctly.\n");
+				System.out.println("\n\t- Events stored correctly in Downloads folder.\n");
 			}
 		}catch(Exception e){
 			System.out.println("ERROR: " + e);

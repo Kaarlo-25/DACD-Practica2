@@ -7,14 +7,12 @@ import java.util.List;
 
 public class Main {
 	public static String apiKey;
-	public static String brokerURL;
-	public static String brokerSubject;
+	public static String brokerURL = "tcp://localhost:61616";
+	public static String brokerSubject = "Topic:prediction.Weather";
 	public static List<Location> locationsList = new ArrayList<>();
 
 	public static void main(String[] args){
-		apiKey = args[0];
-		brokerURL = args[1];
-		brokerSubject = args[2];
+		apiKey = "6c4a8333e1cf9e8ad0c584569528f8b8";//args[0];
 
 		System.out.println("\nENUNCIADO: Obtener cada 6H la predicción meteorológica de los 5 próximos días a las 12:00H para cada una de las 8 islas.\n");
 

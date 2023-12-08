@@ -10,6 +10,7 @@ import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import java.sql.SQLOutput;
 
 
 public class JMSWeatherStore implements EventPublisher {
@@ -37,7 +38,7 @@ public class JMSWeatherStore implements EventPublisher {
 			producer.send(message);
 			connection.close();
 		} catch (JMSException e) {
-			throw new RuntimeException(e);
+			System.out.println("ERROR: "+e);
 		}
 	}
 
