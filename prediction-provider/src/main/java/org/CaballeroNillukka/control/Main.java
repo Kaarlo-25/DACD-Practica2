@@ -12,7 +12,7 @@ public class Main {
 	public static List<Location> locationsList = new ArrayList<>();
 
 	public static void main(String[] args){
-		apiKey = "6c4a8333e1cf9e8ad0c584569528f8b8";//args[0];
+		apiKey = args[0];
 
 		System.out.println("\nENUNCIADO: Obtener cada 6H la predicción meteorológica de los 5 próximos días a las 12:00H para cada una de las 8 islas.\n");
 
