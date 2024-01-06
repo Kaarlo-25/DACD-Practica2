@@ -1,12 +1,10 @@
 package org.CaballeroNillukka.model;
 
-import java.time.Instant;
-
 public class Weather {
 
 	//Constructure
 	private final float temperature;
-	private final int hummidity;
+	private final int humidity;
 	private final float rain;
 	private final float windSpeed;
 	private final float clouds;
@@ -14,9 +12,9 @@ public class Weather {
 	private final String predictionTime;
 	private final String dataSource;
 	private final String eventTime;
-	public Weather(float temperature, int hummidity, float rain, float windSpeed, float clouds, Location location, String predictionTime, String eventTime) {
+	public Weather(float temperature, int humidity, float rain, float windSpeed, float clouds, Location location, String predictionTime, String eventTime) {
 		this.temperature = temperature;
-		this.hummidity = hummidity;
+		this.humidity = humidity;
 		this.rain = rain;
 		this.windSpeed = windSpeed;
 		this.clouds = clouds;
@@ -31,14 +29,14 @@ public class Weather {
 	public String toString() {
 		return "Weather{" +
 				"temperature=" + temperature +
-				", hummidity=" + hummidity +
+				", hummidity=" + humidity +
 				", rain=" + rain +
 				", windSpeed=" + windSpeed +
 				", clouds=" + clouds +
 				", location=" + location +
 				", predictionTime=" + predictionTime +
-				", dataSource='" + dataSource + '\'' +
 				", eventTime=" + eventTime +
+				", dataSource='" + dataSource + '\'' +
 				'}';
 	}
 }
