@@ -15,7 +15,7 @@ public class FileStorer implements EventStorer {
 	}
 
 	@Override
-	public void storeEvents(String event, String subject) {
+	public void storeEvents(String event) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getEventsPath(event), true))) {
 			writer.write(event);
 			writer.newLine(); writer.newLine();
